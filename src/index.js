@@ -1,15 +1,10 @@
-// import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import './css/styles.css';
-import { fetchPictures } from './fetchPictures.js';
+import fetchPictures from './fetchPictures.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = {
-  MY_KEY: '31447881-15e5026ae3260bf72b1d03ba5',
-  WEB: 'https://pixabay.com/api/',
-
-  // input: document.querySelector('[name="searchQuery"]'),
   form: document.querySelector('.search-form'),
   loadMoreBtn: document.querySelector('[data-loadMore]'),
   gallery: document.querySelector('.gallery'),
@@ -19,6 +14,7 @@ const refs = {
     captionDelay: 250,
   }),
 };
+
 let pageNumber = 1;
 let queryArray = '';
 let imgCards = '';
@@ -40,6 +36,7 @@ function onSubmitQuery(e) {
     e.currentTarget.reset();
     clearAll();
     refs.loadMoreBtn.classList.add('is-hidden');
+    Notify.success('O`k!!!SUPER Here we go');
   } else {
     Notify.failure('Sorry, You don`t write any name of picture');
   }
@@ -47,7 +44,7 @@ function onSubmitQuery(e) {
 
 function onGetPic() {
   fetchPictures(queryArray, pageNumber)
-    .then(data => {
+    .then(({ data }) => {
       if (data.hits.length < 1) {
         Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
@@ -57,8 +54,9 @@ function onGetPic() {
         renderCard(data.hits);
         refs.loadMoreBtn.classList.remove('is-hidden');
         console.log(data.totalHits);
-
-        return;
+        refs.largeImage.refresh();
+        // return;
+        onScrollPage();
       }
     })
     .catch(error => {
@@ -66,12 +64,16 @@ function onGetPic() {
       Notify.failure(
         "We're sorry, but you've reached the end of search results."
       );
+      console.log(error);
     });
 }
 
 function onLoadMore() {
   pageNumber += 1;
+
   onGetPic();
+
+  Notify.success(' Here we go more');
 }
 
 function renderCard(imgArr) {
@@ -111,4 +113,18 @@ function onOpenPic(event) {
 
 function clearAll() {
   refs.gallery.innerHTML = '';
+}
+
+function onScrollPage() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+  if (pageNumber > 1) {
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
+  } else {
+    return;
+  }
 }
