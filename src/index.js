@@ -55,6 +55,7 @@ function onGetPic() {
         Notify.failure(
           "We're sorry, but you've reached the end of search results."
         );
+        pageNumber = 1;
       } else {
         renderCard(data.hits);
         refs.loadMoreBtn.classList.remove('is-hidden');
