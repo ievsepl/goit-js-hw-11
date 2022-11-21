@@ -36,7 +36,7 @@ function onSubmitQuery(e) {
     e.currentTarget.reset();
     clearAll();
     refs.loadMoreBtn.classList.add('is-hidden');
-    Notify.success('O`k!!!SUPER Here we go');
+    // Notify.success('O`k!!!SUPER Here we go');
   } else {
     Notify.failure('Sorry, You don`t write any name of picture');
   }
@@ -53,10 +53,11 @@ function onGetPic() {
       } else {
         renderCard(data.hits);
         refs.loadMoreBtn.classList.remove('is-hidden');
-        console.log(data.totalHits);
+        // console.log(data.totalHits);
         refs.largeImage.refresh();
         // return;
         onScrollPage();
+        onTotalHits(data.totalHits);
       }
     })
     .catch(error => {
@@ -68,12 +69,18 @@ function onGetPic() {
     });
 }
 
+function onTotalHits(totalHits) {
+  if (pageNumber === 1) {
+    Notify.success(`Hooray! We found ${totalHits} images.`);
+  } else {
+    Notify.success(' Here we go more');
+  }
+}
+
 function onLoadMore() {
   pageNumber += 1;
 
   onGetPic();
-
-  Notify.success(' Here we go more');
 }
 
 function renderCard(imgArr) {
