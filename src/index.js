@@ -10,7 +10,7 @@ const refs = {
   gallery: document.querySelector('.gallery'),
 
   largeImage: new SimpleLightbox('.photo-card a', {
-    captionsData: `alt`,
+    // captionsData: `alt`,
     captionDelay: 250,
   }),
 };
@@ -45,26 +45,31 @@ function onSubmitQuery(e) {
 function onGetPic() {
   fetchPictures(queryArray, pageNumber)
     .then(({ data }) => {
-      if (data.hits.length < 1) {
+      if (data.totalHits < 1) {
         Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
         );
         return;
+      } else if (data.hits.length < 1) {
+        refs.loadMoreBtn.classList.add('is-hidden');
+        Notify.failure(
+          "We're sorry, but you've reached the end of search results."
+        );
       } else {
         renderCard(data.hits);
         refs.loadMoreBtn.classList.remove('is-hidden');
         // console.log(data.totalHits);
         refs.largeImage.refresh();
-        // return;
         onScrollPage();
         onTotalHits(data.totalHits);
+        return;
       }
     })
     .catch(error => {
-      refs.loadMoreBtn.classList.add('is-hidden');
-      Notify.failure(
-        "We're sorry, but you've reached the end of search results."
-      );
+      // refs.loadMoreBtn.classList.add('is-hidden');
+      // Notify.failure(
+      //   "We're sorry, but you've reached the end of search results."
+      // );
       console.log(error);
     });
 }
