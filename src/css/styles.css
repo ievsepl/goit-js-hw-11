@@ -1,6 +1,11 @@
 * {
   box-sizing: border-box;
 }
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
@@ -10,32 +15,103 @@ body {
   background-color: #fafafa;
   color: #212121;
   line-height: 1.5;
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+margin: 0;
 }
 
-#search-box {
+.search-form {
   font: inherit;
-  padding: 8px;
-  width: 920px;
-  margin-bottom: 16px;
-
-  margin: auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #56e85d;
+margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
 }
 
 li{
   list-style: none;
 }
-/* .country-list p{
-  cursor: pointer;
-  font-size: 40px;
-  margin: 10px;
+
+.gallery{
+  /* display: flex;
+
+  justify-content: space-around;
+  flex-wrap: wrap; */
+display: grid;
+  max-width: 1500px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* grid-auto-rows: 240px; */
+  grid-gap: 12px;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+}
+.photo-card{
+  /* width: calc((100% - (3*30px))/4); */
+position: relative;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+display: flex;
+flex-direction: column;
+
+
+}
+/* .photo-card:last-child {
+  margin-right: 0;
+} */
+.photo-card img:hover {
+  transform: scale(1.03);
 }
 
-.country-info{
-  font-size: 40px;
-  margin: auto;
-} */
+.photo-card img {
+  /* height: 100%; */
+  width: 100%;
+  object-fit: cover;
+  flex-grow: 1;
+  transition: transform var(--animation-duration) var(--timing-function);
+}
+.info{
+  display: flex;
+justify-content: space-around;
+}
+.info-item{
+display: flex;
+text-align: center;
+margin-right: 10px;
+}
+.is-hidden{
+  opacity: 0;
+}
+
+.load-more{
+  display: flex;
+  justify-content: center;
+margin-left: auto;
+margin-right: auto;
+margin-bottom: 30px;
+}
+.button {
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.88;
+  letter-spacing: 0.06em;
+  background-color: #56e85d;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  
+    transition-property: background-color;
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  
+    
+  }
+  .button:hover,
+    .button:focus{
+        background: #f0a40a;
+      }
