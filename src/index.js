@@ -31,6 +31,8 @@ function onInputFunction(e) {
 
 function onSubmitQuery(e) {
   e.preventDefault();
+  pageNumber = 1;
+
   if (refs.form.searchQuery.value) {
     onGetPic();
     e.currentTarget.reset();
@@ -43,36 +45,34 @@ function onSubmitQuery(e) {
 }
 
 function onGetPic() {
-  fetchPictures(queryArray, pageNumber)
-    .then(({ data }) => {
-      if (data.totalHits < 1) {
-        Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-        return;
-      } else if (data.hits.length < 1) {
-        refs.loadMoreBtn.classList.add('is-hidden');
-        Notify.failure(
-          "We're sorry, but you've reached the end of search results."
-        );
-        pageNumber = 1;
-      } else {
-        renderCard(data.hits);
-        refs.loadMoreBtn.classList.remove('is-hidden');
-        // console.log(data.totalHits);
-        refs.largeImage.refresh();
-        onScrollPage();
-        onTotalHits(data.totalHits);
-        return;
-      }
-    })
-    .catch(error => {
-      // refs.loadMoreBtn.classList.add('is-hidden');
-      // Notify.failure(
-      //   "We're sorry, but you've reached the end of search results."
-      // );
-      console.log(error);
-    });
+  fetchPictures(queryArray, pageNumber).then(({ data }) => {
+    if (data.totalHits < 1) {
+      Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+      return;
+    } else if (data.hits.length < 1) {
+      refs.loadMoreBtn.classList.add('is-hidden');
+      Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
+    } else {
+      renderCard(data.hits);
+      refs.loadMoreBtn.classList.remove('is-hidden');
+      // console.log(data.totalHits);
+      refs.largeImage.refresh();
+      onScrollPage();
+      onTotalHits(data.totalHits);
+      return;
+    }
+  });
+  // .catch(error => {
+  //   // refs.loadMoreBtn.classList.add('is-hidden');
+  //   // Notify.failure(
+  //   //   "We're sorry, but you've reached the end of search results."
+  //   // );
+  //   console.log(error);
+  // });
 }
 
 function onTotalHits(totalHits) {
@@ -141,3 +141,13 @@ function onScrollPage() {
     return;
   }
 }
+
+// window.addEventListener('scroll', infinityScroll);
+
+// function infinityScroll() {
+//   const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+//   if (scrollHeight - clientHeight === scrollTop) {
+//     onLoadMore();
+//   }else(wi)
+// }
+// npm install infinite-scroll
